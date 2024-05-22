@@ -12,6 +12,7 @@ import { DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer"
 import User from "./assets/user.jpg";
 import Backups from "./screens/Backups";
 import Categories from "./screens/Categories";
+import Scan from "./screens/Scan"
 import Contact from "./screens/Contact";
 import Customize from "./screens/Customize";
 import GetPremium from "./screens/GetPremium";
@@ -125,7 +126,7 @@ export default function App() {
               <MaterialCommunityIcons name="qrcode-scan" size={20} color="#808080" />
             ),
           }}
-          component={Categories}
+          component={Scan}
         />
         <Drawer.Screen
           name="Customize"
