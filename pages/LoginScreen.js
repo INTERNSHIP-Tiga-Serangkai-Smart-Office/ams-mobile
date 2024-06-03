@@ -10,9 +10,12 @@ import {
   TextInput,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Ionicons} from '@expo/vector-icons';
 
 export default function Example() {
-    
+  
+  const [show, setShow] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();
   const [form, setForm] = useState({
     email: '',
@@ -27,18 +30,13 @@ export default function Example() {
               alt="App Logo"
               resizeMode="contain"
               style={styles.headerImg}
-              source={{
-                uri: 'https://assets.withfra.me/SignIn.2.png',
-              }}
+              source="../assets/TSPM.png"
             />
 
             <Text style={styles.title}>
-              Sign in to <Text style={{color: '#075eec'}}>MyApp</Text>
+              Sign in to <Text style={{color: '#2e8b57'}}>AMS</Text>
             </Text>
 
-            <Text style={styles.subtitle}>
-              Get access to your portfolio and more
-            </Text>
           </View>
 
           <View style={styles.form}>
@@ -68,14 +66,24 @@ export default function Example() {
                 placeholder="********"
                 placeholderTextColor="#6b7280"
                 style={styles.inputControl}
-                secureTextEntry={true}
+                secureTextEntry={visible}
                 value={form.password}
               />
+              <View>
+              <TouchableOpacity style={{position: 'absolute', bottom:12, right: 30}}
+                onPress={() => {
+                  setVisible(!visible)
+                  setShow(!show)
+                }}>
+                <Ionicons
+                  name={show === false ? 'eye-outline' : 'eye-off-outline'}
+                  size={25}></Ionicons>
+              </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.formAction}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Home')}>
+              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <View style={styles.btn}>
                   <Text style={styles.btnText}>Sign in</Text>
                 </View>
@@ -86,16 +94,7 @@ export default function Example() {
           </View>
         </KeyboardAwareScrollView>
 
-        <TouchableOpacity
-          onPress={() => {
-            // handle link
-          }}
-          style={{marginTop: 'auto'}}>
-          <Text style={styles.formFooter}>
-            Don't have an account?{' '}
-            <Text style={{textDecorationLine: 'underline'}}>Sign up</Text>
-          </Text>
-        </TouchableOpacity>
+        
       </View>
     </SafeAreaView>
   );
@@ -103,7 +102,7 @@ export default function Example() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 24,
+    paddingVertical: 10,
     paddingHorizontal: 0,
     flexGrow: 1,
     flexShrink: 1,
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
     flexBasis: 0,
   },
   formAction: {
-    marginTop: 4,
+    marginTop: 10,
     marginBottom: 16,
   },
   formLink: {

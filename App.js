@@ -19,7 +19,6 @@ import DataMaster from "./screens/DataMaster";
 import DataRelokasi from "./screens/DataRelokasi";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./pages/LoginScreen";
-import { styleProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -161,6 +160,7 @@ export default function App() {
           }}
           component={Logout}
         />
+        <Stack.Screen name="LoginScreen" component={LoginScreen}></Stack.Screen>
       </Drawer.Navigator>
     </NavigationContainer>
   );
