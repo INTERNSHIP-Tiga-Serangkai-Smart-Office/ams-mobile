@@ -1,19 +1,25 @@
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   StyleSheet,
   SafeAreaView,
   View,
-  Image,
   Text,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Ionicons} from '@expo/vector-icons';
+import ROUTES from "../constants/route";
+import {Image} from 'expo-image';
+import DrawerScreen from '../Drawer/DrawerScreen';
+import Home from '../screens/Home';
 
 export default function Example() {
-  
+
+  const onLoginSuccess = navigation => {
+    navigation.navigate(ROUTES.DRAWER);
+  };
   const [show, setShow] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();
@@ -26,17 +32,14 @@ export default function Example() {
       <View style={styles.container}>
         <KeyboardAwareScrollView>
           <View style={styles.header}>
-            <Image
-              alt="App Logo"
-              resizeMode="contain"
-              style={styles.headerImg}
-              source="../assets/TSPM.png"
-            />
-
-            <Text style={styles.title}>
-              Sign in to <Text style={{color: '#2e8b57'}}>AMS</Text>
-            </Text>
-
+            <Image 
+            style={{
+            alignItems: 'center',
+            resizeMode: 'cover',
+            width: 300,
+            height: 300
+            }}
+            source={require("../assets/TSPM.png")}/>
           </View>
 
           <View style={styles.form}>
@@ -70,31 +73,33 @@ export default function Example() {
                 value={form.password}
               />
               <View>
-              <TouchableOpacity style={{position: 'absolute', bottom:12, right: 30}}
-                onPress={() => {
-                  setVisible(!visible)
-                  setShow(!show)
-                }}>
-                <Ionicons
-                  name={show === false ? 'eye-outline' : 'eye-off-outline'}
-                  size={25}></Ionicons>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={{position: 'absolute', bottom: 12, right: 30}}
+                  onPress={() => {
+                    setVisible(!visible);
+                    setShow(!show);
+                  }}>
+                  <Ionicons
+                    name={show === false ? 'eye-outline' : 'eye-off-outline'}
+                    size={25}></Ionicons>
+                </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.formAction}>
-              <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <TouchableOpacity onPress={() => navigation.navigate(DrawerScreen)}
+              >
                 <View style={styles.btn}>
                   <Text style={styles.btnText}>Sign in</Text>
                 </View>
               </TouchableOpacity>
             </View>
-
-            <Text style={styles.formLink}>Forgot password?</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ROUTES.FORGOT)}>
+              <Text style={styles.formLink}>Forgot password?</Text>
+            </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
-
-        
       </View>
     </SafeAreaView>
   );
@@ -123,14 +128,9 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 36,
+    marginVertical: 10,
   },
-  headerImg: {
-    width: 80,
-    height: 80,
-    alignSelf: 'center',
-    marginBottom: 36,
-  },
+ 
   /** Form */
   form: {
     marginBottom: 24,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   formLink: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#075eec',
+    color: '#000',
     textAlign: 'center',
   },
   formFooter: {
@@ -187,8 +187,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderWidth: 1,
-    backgroundColor: '#075eec',
-    borderColor: '#075eec',
+    backgroundColor: '#2e8b57',
+    borderColor: '#2e8b57',
   },
   btnText: {
     fontSize: 18,
