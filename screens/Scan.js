@@ -29,7 +29,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <CameraView onBarcodeScanned={scanned ? undefined : handleBarCodeScanned} style={StyleSheet.absoluteFillObject} />
+      <CameraView
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        // barcodeScannerSettings={{
+        //   barcodeTypes: ["qr", "pdf417"],
+        // }}
+        style={StyleSheet.absoluteFillObject}
+      />
       {scanned && <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />}
     </View>
   );
