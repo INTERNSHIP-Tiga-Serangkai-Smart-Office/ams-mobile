@@ -16,7 +16,6 @@
     "@react-navigation/stack": "^6.3.29",
     "babel-plugin-module-resolver": "^5.0.2",
     "expo": "~51.0.9",
-    "expo-barcode-scanner": "~13.0.1",
     "expo-camera": "~15.0.10",
     "expo-image": "~1.12.9",
     "expo-status-bar": "~1.12.1",

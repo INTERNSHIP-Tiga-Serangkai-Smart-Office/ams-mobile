@@ -1,45 +1,37 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import React, {useState} from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Ionicons} from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image";
+import React, { useState } from "react";
+import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import DrawerScreen from "../Drawer/DrawerScreen";
 import ROUTES from "../constants/route";
-import {Image} from 'expo-image';
-import DrawerScreen from '../Drawer/DrawerScreen';
-import Home from '../screens/Home';
 
 export default function Example() {
-
-  const onLoginSuccess = navigation => {
+  const onLoginSuccess = (navigation) => {
     navigation.navigate(ROUTES.DRAWER);
   };
   const [show, setShow] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#e8ecf4'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>
       <View style={styles.container}>
         <KeyboardAwareScrollView>
           <View style={styles.header}>
-            <Image 
-            style={{
-            alignItems: 'center',
-            resizeMode: 'cover',
-            width: 300,
-            height: 300
-            }}
-            source={require("../assets/TSPM.png")}/>
+            <Image
+              style={{
+                alignItems: "center",
+                contentFit: "cover",
+                width: 300,
+                height: 300,
+              }}
+              source={require("../assets/TSPM.png")}
+            />
           </View>
 
           <View style={styles.form}>
@@ -51,7 +43,7 @@ export default function Example() {
                 autoCorrect={false}
                 clearButtonMode="while-editing"
                 keyboardType="email-address"
-                onChangeText={email => setForm({...form, email})}
+                onChangeText={(email) => setForm({ ...form, email })}
                 placeholder="john@example.com"
                 placeholderTextColor="#6b7280"
                 style={styles.inputControl}
@@ -65,7 +57,7 @@ export default function Example() {
               <TextInput
                 autoCorrect={false}
                 clearButtonMode="while-editing"
-                onChangeText={password => setForm({...form, password})}
+                onChangeText={(password) => setForm({ ...form, password })}
                 placeholder="********"
                 placeholderTextColor="#6b7280"
                 style={styles.inputControl}
@@ -74,28 +66,25 @@ export default function Example() {
               />
               <View>
                 <TouchableOpacity
-                  style={{position: 'absolute', bottom: 12, right: 30}}
+                  style={{ position: "absolute", bottom: 12, right: 30 }}
                   onPress={() => {
                     setVisible(!visible);
                     setShow(!show);
-                  }}>
-                  <Ionicons
-                    name={show === false ? 'eye-outline' : 'eye-off-outline'}
-                    size={25}></Ionicons>
+                  }}
+                >
+                  <Ionicons name={show === false ? "eye-outline" : "eye-off-outline"} size={25}></Ionicons>
                 </TouchableOpacity>
               </View>
             </View>
 
             <View style={styles.formAction}>
-              <TouchableOpacity onPress={() => navigation.navigate(DrawerScreen)}
-              >
+              <TouchableOpacity onPress={() => navigation.navigate(DrawerScreen)}>
                 <View style={styles.btn}>
                   <Text style={styles.btnText}>Sign in</Text>
                 </View>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate(ROUTES.FORGOT)}>
+            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FORGOT)}>
               <Text style={styles.formLink}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
@@ -115,22 +104,22 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 31,
-    fontWeight: '700',
-    color: '#1D2A32',
+    fontWeight: "700",
+    color: "#1D2A32",
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 15,
-    fontWeight: '500',
-    color: '#929292',
+    fontWeight: "500",
+    color: "#929292",
   },
   /** Header */
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginVertical: 10,
   },
- 
+
   /** Form */
   form: {
     marginBottom: 24,
@@ -145,15 +134,15 @@ const styles = StyleSheet.create({
   },
   formLink: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#000',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: "#000",
+    textAlign: "center",
   },
   formFooter: {
     fontSize: 15,
-    fontWeight: '600',
-    color: '#222',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: "#222",
+    textAlign: "center",
     letterSpacing: 0.15,
   },
   /** Input */
@@ -162,38 +151,38 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 17,
-    fontWeight: '600',
-    color: '#222',
+    fontWeight: "600",
+    color: "#222",
     marginBottom: 8,
   },
   inputControl: {
     height: 50,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 16,
     borderRadius: 12,
     fontSize: 15,
-    fontWeight: '500',
-    color: '#222',
+    fontWeight: "500",
+    color: "#222",
     borderWidth: 1,
-    borderColor: '#C9D3DB',
-    borderStyle: 'solid',
+    borderColor: "#C9D3DB",
+    borderStyle: "solid",
   },
   /** Button */
   btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderWidth: 1,
-    backgroundColor: '#2e8b57',
-    borderColor: '#2e8b57',
+    backgroundColor: "#2e8b57",
+    borderColor: "#2e8b57",
   },
   btnText: {
     fontSize: 18,
     lineHeight: 26,
-    fontWeight: '600',
-    color: '#fff',
+    fontWeight: "600",
+    color: "#fff",
   },
 });
