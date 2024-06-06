@@ -23,17 +23,18 @@ const Drawer = createDrawerNavigator();
 const DrawerScreen = () => {
   return (
     <Drawer.Navigator
-      drawerContent={props => (
+      drawerContent={(props) => (
         <SafeAreaView>
           <View
             style={{
               height: 220,
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderBottomColor: '#f4f4f4',
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              borderBottomColor: "#f4f4f4",
               borderBottomWidth: 1,
-            }}>
+            }}
+          >
             <Image
               source={User}
               style={{
@@ -46,16 +47,18 @@ const DrawerScreen = () => {
               style={{
                 fontSize: 22,
                 marginVertical: 5,
-                fontWeight: 'bold',
-                color: '#111',
-              }}>
+                fontWeight: "bold",
+                color: "#111",
+              }}
+            >
               Isabella Joanna
             </Text>
             <Text
               style={{
                 fontSize: 16,
-                color: '#111',
-              }}>
+                color: "#111",
+              }}
+            >
               Superadmin
             </Text>
           </View>
@@ -64,25 +67,26 @@ const DrawerScreen = () => {
       )}
       screenOptions={{
         drawerStyle: {
-          backgroundColor: '#ffff',
-          width: 230,
+          backgroundColor: "#ffff",
+          width: 220,
         },
         headerStyle: {
-          backgroundColor: '#ff0000',
+          backgroundColor: "#ff0000",
         },
-        headerTintColor: '#fff',
+        headerTintColor: "#fff",
         headerTitleStyle: {
-          fontWeight: 'bold',
+          fontWeight: "bold",
         },
         drawerLabelStyle: {
-          color: '#111',
+          color: "#111",
         },
-      }}>
+      }}
+    >
       <Drawer.Screen
         name="Home"
         options={{
-          drawerLabel: 'Home',
-          title: 'Home',
+          drawerLabel: "Home",
+          title: "Home",
           drawerIcon: () => (
             <SimpleLineIcons name="home" size={20} color="#808080" />
           ),
@@ -92,8 +96,8 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Data Master"
         options={{
-          drawerLabel: 'Data Master',
-          title: 'Data Master',
+          drawerLabel: "Data Master",
+          title: "Data Master",
           drawerIcon: () => (
             <MaterialIcons name="data-exploration" size={20} color="#808080" />
           ),
@@ -103,8 +107,8 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Data Relokasi"
         options={{
-          drawerLabel: 'Data Relokasi',
-          title: 'Data Relokasi',
+          drawerLabel: "Data Relokasi",
+          title: "Data Relokasi",
           drawerIcon: () => (
             <MaterialIcons name="dataset" size={20} color="#808080" />
           ),
@@ -114,8 +118,8 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Scan"
         options={{
-          drawerLabel: 'Scan',
-          title: 'Scan',
+          drawerLabel: "Scan",
+          title: "Scan",
           drawerIcon: () => (
             <MaterialCommunityIcons
               name="qrcode-scan"
@@ -129,8 +133,8 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Settings"
         options={{
-          drawerLabel: 'Settings',
-          title: 'Settings',
+          drawerLabel: "Settings",
+          title: "Settings",
           drawerIcon: () => (
             <SimpleLineIcons name="settings" size={20} color="#808080" />
           ),
@@ -140,8 +144,8 @@ const DrawerScreen = () => {
       <Drawer.Screen
         name="Signout"
         options={{
-          drawerLabel: 'Signout',
-          title: 'Signout',
+          drawerLabel: "Signout",
+          title: "Signout",
           drawerIcon: () => <Entypo name="log-out" size={20} color="#ff0000" />,
         }}
         component={Logout}

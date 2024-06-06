@@ -1,5 +1,4 @@
 
-
 export default{
     LOGIN: 'Login',
     SIGNIN: 'Signin',
