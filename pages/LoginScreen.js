@@ -2,22 +2,45 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import DrawerScreen from "../Drawer/DrawerScreen";
 import ROUTES from "../constants/route";
 
 export default function Example() {
-  const onLoginSuccess = (navigation) => {
-    navigation.navigate(ROUTES.DRAWER);
-  };
-  const [show, setShow] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
+  const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  const handleLogin = async () => {
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+    try {
+      const response = await fetch(`${apiUrl}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
+      const responseData = await response.json();
+
+      if (response.ok) {
+        navigation.navigate(ROUTES.DRAWER);
+      } else {
+        Alert.alert("Login Failed", responseData.error);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Something went wrong. Please try again later.");
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#e8ecf4" }}>
       <View style={styles.container}>
@@ -78,7 +101,7 @@ export default function Example() {
             </View>
 
             <View style={styles.formAction}>
-              <TouchableOpacity onPress={() => navigation.navigate(DrawerScreen)}>
+              <TouchableOpacity onPress={handleLogin}>
                 <View style={styles.btn}>
                   <Text style={styles.btnText}>Sign in</Text>
                 </View>
