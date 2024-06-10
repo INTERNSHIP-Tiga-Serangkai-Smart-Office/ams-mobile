@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
 import React from "react";
 import { Ionicons } from '@expo/vector-icons';
-
 import { Octicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
@@ -53,7 +52,7 @@ export default function Home() {
             borderRadius: 20,
             paddingHorizontal: 40,
             paddingVertical: 10,
-            marginLeft: 10,
+            marginLeft: 20,
             marginBottom: 400,
             elevation: 10,
             shadowColor: "black",
@@ -125,7 +124,7 @@ export default function Home() {
 
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => navigation.navigate("Scan")}
+        onPress={() => navigation.navigate('Scan')}
       >
         <Ionicons name="scan-circle" size={80} color={"#000000"}></Ionicons>
       </TouchableOpacity>

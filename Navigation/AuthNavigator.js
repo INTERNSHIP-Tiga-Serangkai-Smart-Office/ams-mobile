@@ -1,12 +1,11 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoginScreen from "../pages/LoginScreen";
+import React from "react";
 import ROUTES from "../constants/route";
 import ForgotScreen from "../pages/ForgotScreen";
+import LoginScreen from "../pages/LoginScreen";
 import SigninScreen from './../pages/SigninScreen';
-import DrawerScreen from "../Drawer/DrawerScreen";
-import Scan from "../screens/Scan";
-
+import Drawer from '../Drawer/DrawerScreen';
+import Scan from '../screens/Scan';
 const Stack = createStackNavigator();
 
 function AuthNavigator () {
@@ -16,10 +15,10 @@ function AuthNavigator () {
             <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen}></Stack.Screen>
             <Stack.Screen name={ROUTES.FORGOT} component={ForgotScreen}></Stack.Screen>
             <Stack.Screen name={ROUTES.SIGNIN} component={SigninScreen}></Stack.Screen>
-            <Stack.Screen name={"Scan"} component={Scan}></Stack.Screen>
-            <Stack.Screen name={ROUTES.DRAWER} component={DrawerScreen} options={{ headerShown: false }} />
+             <Stack.Screen name="Scan" component={Scan} />
+            <Stack.Screen name={ROUTES.DRAWER} component={Drawer} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
-}
+  };
 
 export default AuthNavigator;
