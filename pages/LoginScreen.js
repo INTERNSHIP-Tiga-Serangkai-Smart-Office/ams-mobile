@@ -13,13 +13,9 @@ import {Ionicons} from '@expo/vector-icons';
 import ROUTES from "../constants/route";
 import {Image} from 'expo-image';
 import DrawerScreen from '../Drawer/DrawerScreen';
-import Home from '../screens/Home';
 
 export default function Example() {
 
-  const onLoginSuccess = navigation => {
-    navigation.navigate(ROUTES.DRAWER);
-  };
   const [show, setShow] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();

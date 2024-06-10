@@ -2,25 +2,25 @@ import React from 'react';
 import {
   SimpleLineIcons,
   MaterialIcons,
-  MaterialCommunityIcons,
   Entypo,
 } from '@expo/vector-icons';
 import {View, Text} from 'react-native';
 import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Image} from 'expo-image';
-
 import Home from '../screens/Home';
 import DataMaster from '../screens/DataMaster';
 import DataRelokasi from '../screens/DataRelokasi';
-import Logout from '../screens/Logout';
-import Scan from '../screens/Scan';
+import Signout from '../screens/Signout';
 import Settings from '../screens/Settings';
 import User from '../assets/user.jpg';
+import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerScreen = () => {
+
+  const navigation = useNavigation();
   return (
     <Drawer.Navigator
       drawerContent={(props) => (
@@ -41,6 +41,7 @@ const DrawerScreen = () => {
                 height: 120,
                 width: 120,
                 borderRadius: 65,
+                resizeMode: 'contain'
               }}
             />
             <Text
@@ -71,7 +72,7 @@ const DrawerScreen = () => {
           width: 220,
         },
         headerStyle: {
-          backgroundColor: "#ff0000",
+          backgroundColor: "#2e8b57",
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
@@ -115,21 +116,7 @@ const DrawerScreen = () => {
         }}
         component={DataRelokasi}
       />
-      <Drawer.Screen
-        name="Scan"
-        options={{
-          drawerLabel: "Scan",
-          title: "Scan",
-          drawerIcon: () => (
-            <MaterialCommunityIcons
-              name="qrcode-scan"
-              size={20}
-              color="#808080"
-            />
-          ),
-        }}
-        component={Scan}
-      />
+
       <Drawer.Screen
         name="Settings"
         options={{
@@ -146,9 +133,9 @@ const DrawerScreen = () => {
         options={{
           drawerLabel: "Signout",
           title: "Signout",
-          drawerIcon: () => <Entypo name="log-out" size={20} color="#ff0000" />,
+          drawerIcon: () => <Entypo name="log-out" size={20} color="#ff0000"/>,
         }}
-        component={Logout}
+        component={Signout}
       />
     </Drawer.Navigator>
   );

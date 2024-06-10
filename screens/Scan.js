@@ -1,21 +1,21 @@
-import React, {useState, useEffect} from 'react';
-import {Text, View, StyleSheet, Button} from 'react-native';
-import {BarCodeScanner} from 'expo-barcode-scanner';
+import { Camera, CameraView } from "expo-camera";
+import React, { useEffect, useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  
+
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const {status} = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+    const getCameraPermissions = async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
     };
 
-    getBarCodeScannerPermissions();
+    getCameraPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({type, data}) => {
+  const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
@@ -29,12 +29,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+      <CameraView
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+         barcodeScannerSettings={{
+          barcodeTypes: ["qr", "pdf417"],
+         }}
         style={StyleSheet.absoluteFillObject}
       />
       {scanned && (
-        <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
+        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
       )}
     </View>
   );
@@ -43,7 +46,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
   },
 });
