@@ -10,9 +10,6 @@ import Home from '../screens/Home';
 
 export default function Example() {
 
-  const onLoginSuccess = navigation => {
-    navigation.navigate(ROUTES.DRAWER);
-  };
   const [show, setShow] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();
@@ -56,8 +53,9 @@ export default function Example() {
               style={{
                 alignItems: "center",
                 contentFit: "cover",
-                width: 300,
-                height: 300,
+                width: 350,
+                height: 350,
+                marginBottom: 10
               }}
               source={require("../assets/TSPM.png")}
             />
@@ -95,7 +93,7 @@ export default function Example() {
               />
               <View>
                 <TouchableOpacity
-                  style={{ position: "absolute", bottom: 12, right: 30 }}
+                  style={{ position: "absolute", bottom: 12, right: 20 }}
                   onPress={() => {
                     setVisible(!visible);
                     setShow(!show);

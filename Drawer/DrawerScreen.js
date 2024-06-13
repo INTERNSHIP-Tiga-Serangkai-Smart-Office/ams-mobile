@@ -5,7 +5,7 @@ import {
   Entypo,
 } from '@expo/vector-icons';
 import {View, Text} from 'react-native';
-import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
+import {createDrawerNavigator, DrawerItem, DrawerItemList} from '@react-navigation/drawer';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Image} from 'expo-image';
 import Home from '../screens/Home';
@@ -13,14 +13,12 @@ import DataMaster from '../screens/DataMaster';
 import DataRelokasi from '../screens/DataRelokasi';
 import Signout from '../screens/Signout';
 import Settings from '../screens/Settings';
-import User from '../assets/user.jpg';
+import User from '../assets/superadmin.png';
 import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
 const DrawerScreen = () => {
-
-  const navigation = useNavigation();
   return (
     <Drawer.Navigator
       drawerContent={(props) => (
@@ -31,28 +29,27 @@ const DrawerScreen = () => {
               width: "100%",
               justifyContent: "center",
               alignItems: "center",
-              borderBottomColor: "#f4f4f4",
+              borderBottomColor: "#111",
               borderBottomWidth: 1,
             }}
           >
             <Image
               source={User}
               style={{
-                height: 120,
-                width: 120,
+                height: 110,
+                width: 110,
                 borderRadius: 65,
-                resizeMode: 'contain'
               }}
             />
             <Text
               style={{
-                fontSize: 22,
+                fontSize: 24,
                 marginVertical: 5,
                 fontWeight: "bold",
                 color: "#111",
               }}
             >
-              Isabella Joanna
+              Johndea
             </Text>
             <Text
               style={{
@@ -68,18 +65,18 @@ const DrawerScreen = () => {
       )}
       screenOptions={{
         drawerStyle: {
-          backgroundColor: "#ffff",
-          width: 220,
+          backgroundColor: "#3cb371",
+          width: 230,
         },
         headerStyle: {
-          backgroundColor: "#2e8b57",
+          backgroundColor: "#3cb371",
         },
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontWeight: "bold",
         },
         drawerLabelStyle: {
-          color: "#111",
+          color: "white",
         },
       }}
     >
@@ -89,7 +86,7 @@ const DrawerScreen = () => {
           drawerLabel: "Home",
           title: "Home",
           drawerIcon: () => (
-            <SimpleLineIcons name="home" size={20} color="#808080" />
+            <SimpleLineIcons name="home" size={25} color="#111" />
           ),
         }}
         component={Home}
@@ -100,7 +97,7 @@ const DrawerScreen = () => {
           drawerLabel: "Data Master",
           title: "Data Master",
           drawerIcon: () => (
-            <MaterialIcons name="data-exploration" size={20} color="#808080" />
+            <MaterialIcons name="data-exploration" size={25} color="#111" />
           ),
         }}
         component={DataMaster}
@@ -111,7 +108,7 @@ const DrawerScreen = () => {
           drawerLabel: "Data Relokasi",
           title: "Data Relokasi",
           drawerIcon: () => (
-            <MaterialIcons name="dataset" size={20} color="#808080" />
+            <MaterialIcons name="dataset" size={25} color="#111" />
           ),
         }}
         component={DataRelokasi}
@@ -123,7 +120,7 @@ const DrawerScreen = () => {
           drawerLabel: "Settings",
           title: "Settings",
           drawerIcon: () => (
-            <SimpleLineIcons name="settings" size={20} color="#808080" />
+            <SimpleLineIcons name="settings" size={25} color="#111" />
           ),
         }}
         component={Settings}
@@ -133,7 +130,7 @@ const DrawerScreen = () => {
         options={{
           drawerLabel: "Signout",
           title: "Signout",
-          drawerIcon: () => <Entypo name="log-out" size={20} color="#ff0000"/>,
+          drawerIcon: () => <Entypo name="log-out" size={25} color="#ff0000" />,
         }}
         component={Signout}
       />

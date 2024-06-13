@@ -4,7 +4,7 @@ import React from 'react'
 export default function Settings() {
   return (
     <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-      <Text>Settings</Text>
+      <Text></Text>
     </View>
   )
 }

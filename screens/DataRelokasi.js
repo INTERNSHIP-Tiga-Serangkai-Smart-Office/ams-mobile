@@ -4,7 +4,7 @@ import React from 'react'
 export default function Contact() {
   return (
     <View style={{flex: 1, alignItems: "center", justifyContent: "center"}} >
-      <Text>Data Relokasi</Text>
+      <Text></Text>
     </View>
   )
 }

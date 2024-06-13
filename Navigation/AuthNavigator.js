@@ -11,12 +11,16 @@ const Stack = createStackNavigator();
 function AuthNavigator () {
     console.log(Stack);
     return(
-        <Stack.Navigator initialRouteName={ROUTES.LOGIN}>
+        <Stack.Navigator initialRouteName={ROUTES.LOGIN} screenOptions={{headerShown: false}}>
             <Stack.Screen name={ROUTES.LOGIN} component={LoginScreen}></Stack.Screen>
             <Stack.Screen name={ROUTES.FORGOT} component={ForgotScreen}></Stack.Screen>
             <Stack.Screen name={ROUTES.SIGNIN} component={SigninScreen}></Stack.Screen>
-             <Stack.Screen name="Scan" component={Scan} />
             <Stack.Screen name={ROUTES.DRAWER} component={Drawer} options={{ headerShown: false }} />
+            <Stack.Screen name="Scan" 
+            component={Scan} 
+            options={{headerShown: true}} 
+            
+            />
         </Stack.Navigator>
     );
   };
