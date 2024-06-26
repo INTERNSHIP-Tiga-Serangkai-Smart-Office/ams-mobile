@@ -14,7 +14,6 @@ import DataRelokasi from '../screens/DataRelokasi';
 import Signout from '../screens/Signout';
 import Settings from '../screens/Settings';
 import User from '../assets/superadmin.png';
-import { useNavigation } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
@@ -92,10 +91,10 @@ const DrawerScreen = () => {
         component={Home}
       />
       <Drawer.Screen
-        name="Data Master"
+        name="Data Aset"
         options={{
-          drawerLabel: "Data Master",
-          title: "Data Master",
+          drawerLabel: "Data Aset",
+          title: "Data Aset",
           drawerIcon: () => (
             <MaterialIcons name="data-exploration" size={25} color="#111" />
           ),

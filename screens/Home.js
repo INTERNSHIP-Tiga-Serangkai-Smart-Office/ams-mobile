@@ -73,8 +73,8 @@ export default function Home() {
         style={styles.floatingButton}
         onPress={() => navigation.navigate("Scan")}
       >
-        <View style={{ backgroundColor: "#3cb371", borderRadius: 20 }}>
-          <AntDesign name="scan1" size={55} color="white" />
+        <View style={{ backgroundColor: "#3cb371", borderRadius: 30, padding: 8 }}>
+          <AntDesign name="scan1" size={45} color="white" />
         </View>
       </TouchableOpacity>
     </View>
