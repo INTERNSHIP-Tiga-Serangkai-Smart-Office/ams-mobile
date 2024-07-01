@@ -13,16 +13,15 @@ export default function SplashScreen() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#1e1e1e"
-    },
-    image: {
-        width: 100,
-        height: 100,
-        resizeMode: "cover",
-        
-    }
-})
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fffafa",
+  },
+  image: {
+    width: 360,
+    height: 360,
+    resizeMode: "cover",
+  },
+});
