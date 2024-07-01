@@ -1,6 +1,6 @@
 import { Camera, CameraView } from "expo-camera";
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, Linking } from "react-native";
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -17,7 +17,7 @@ export default function App() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    alert(`Bar code with type ${type} and data ${Linking.openURL(`${data}`)} has been scanned!`);
   };
 
   if (hasPermission === null) {

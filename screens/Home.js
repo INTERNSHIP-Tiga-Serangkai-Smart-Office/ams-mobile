@@ -1,6 +1,12 @@
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+} from "react-native";
 import React from "react";
-import { Ionicons } from '@expo/vector-icons';
 import { Octicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -9,7 +15,6 @@ import Search from "../assets/search.png";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function Home() {
-
   const navigation = useNavigation();
 
   return (
@@ -73,7 +78,9 @@ export default function Home() {
         style={styles.floatingButton}
         onPress={() => navigation.navigate("Scan")}
       >
-        <View style={{ backgroundColor: "#3cb371", borderRadius: 30, padding: 8 }}>
+        <View
+          style={{ backgroundColor: "#3cb371", borderRadius: 30, padding: 8 }}
+        >
           <AntDesign name="scan1" size={45} color="white" />
         </View>
       </TouchableOpacity>
