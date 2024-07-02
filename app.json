@@ -5,11 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/TS.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/TSPM.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+    "userInterfaceStyle": "light"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -37,4 +33,4 @@
       "favicon": "./assets/favicon.png"
     }
   }
-}
+
