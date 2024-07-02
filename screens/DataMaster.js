@@ -3,22 +3,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function DataMaster() {
-  const [users, setUsers] = useState([]);
+  const [master, setMaster] = useState([]);
 
   useEffect(() => {
     axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((response) => setUsers(response.data))
+      .get("http://localhost:5000/fixed")
+      .then((response) => {
+        console.log(response.data);
+        setMaster(response.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
-  const renderUserCard = ({ item }) => {
+  const renderUserCard = ({item}) => {
     return (
       <View style={styles.card}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.email}>{item.email}</Text>
-        <Text style={styles.username}>{item.username}</Text>
-        <Text style={styles.website}>{item.website}</Text>
+        <Text style={styles.title}>{item.EntityRelations.EntityName}</Text>
+        <Text style={styles.email}>{item.AccNo}</Text>
+        <Text style={styles.username}>{item.FixedGroup ? d.FixedGroup.Name : "N/A"}</Text>
+        <Text style={styles.website}>{item.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</Text>
       </View>
     );
   };
@@ -26,8 +29,8 @@ export default function DataMaster() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={users}
-        keyExtractor={(item) => item.id.toString()}
+        data={master}
+        keyExtractor={(item) => item.FixedIDNo.toString()}
         renderItem={renderUserCard}
       ></FlatList>
     </View>
