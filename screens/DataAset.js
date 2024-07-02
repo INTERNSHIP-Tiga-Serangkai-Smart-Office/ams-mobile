@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function DataMaster() {
+export default function DataAset() {
   const [master, setMaster] = useState([]);
 
   useEffect(() => {
@@ -15,13 +15,17 @@ export default function DataMaster() {
       .catch((err) => console.log(err));
   }, []);
 
-  const renderUserCard = ({item}) => {
+  const renderUserCard = ({ item }) => {
     return (
       <View style={styles.card}>
         <Text style={styles.title}>{item.EntityRelations.EntityName}</Text>
         <Text style={styles.email}>{item.AccNo}</Text>
-        <Text style={styles.username}>{item.FixedGroup ? d.FixedGroup.Name : "N/A"}</Text>
-        <Text style={styles.website}>{item.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</Text>
+        <Text style={styles.username}>
+          {item.FixedGroup ? d.FixedGroup.Name : "N/A"}
+        </Text>
+        <Text style={styles.website}>
+          {item.EntitasBisnis ? d.EntitasBisni.EBCode : "N/A"}
+        </Text>
       </View>
     );
   };
