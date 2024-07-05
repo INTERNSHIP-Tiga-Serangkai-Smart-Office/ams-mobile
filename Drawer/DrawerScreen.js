@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
+import { SimpleLineIcons, MaterialIcons, Entypo } from "@expo/vector-icons";
+import { View, Text } from "react-native";
 import {
-  SimpleLineIcons,
-  MaterialIcons,
-  Entypo,
-} from '@expo/vector-icons';
-import {View, Text} from 'react-native';
-import {createDrawerNavigator, DrawerItem, DrawerItemList} from '@react-navigation/drawer';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Image} from 'expo-image';
-import Home from '../screens/Home';
-import DataMaster from '../screens/DataMaster';
-import DataRelokasi from '../screens/DataRelokasi';
-import Signout from '../screens/Signout';
-import Settings from '../screens/Settings';
-import User from '../assets/superadmin.png';
+  createDrawerNavigator,
+  DrawerItem,
+  DrawerItemList,
+} from "@react-navigation/drawer";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Image } from "expo-image";
+import Home from "../screens/Home";
+import DataAset from "../screens/DataAset";
+import DataRelokasi from "../screens/DataRelokasi";
+import Signout from "../screens/Signout";
+import Settings from "../screens/Settings";
+import User from "../assets/superadmin.png";
 
 const Drawer = createDrawerNavigator();
 
@@ -99,7 +99,7 @@ const DrawerScreen = () => {
             <MaterialIcons name="data-exploration" size={25} color="#111" />
           ),
         }}
-        component={DataMaster}
+        component={DataAset}
       />
       <Drawer.Screen
         name="Data Relokasi"
