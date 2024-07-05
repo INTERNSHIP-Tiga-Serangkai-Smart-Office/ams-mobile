@@ -6,6 +6,7 @@ import LoginScreen from "../pages/LoginScreen";
 import SigninScreen from './../pages/SigninScreen';
 import Drawer from '../Drawer/DrawerScreen';
 import Scan from '../screens/Scan';
+import Detail from "../screens/Detail";
 const Stack = createStackNavigator();
 
 function AuthNavigator () {
@@ -16,11 +17,8 @@ function AuthNavigator () {
             <Stack.Screen name={ROUTES.FORGOT} component={ForgotScreen}></Stack.Screen>
             <Stack.Screen name={ROUTES.SIGNIN} component={SigninScreen}></Stack.Screen>
             <Stack.Screen name={ROUTES.DRAWER} component={Drawer} options={{ headerShown: false }} />
-            <Stack.Screen name="Scan" 
-            component={Scan} 
-            options={{headerShown: true}} 
-            
-            />
+            <Stack.Screen name="Scan" component={Scan} options={{ headerShown: true }} />
+            <Stack.Screen name="Detail" component={Detail} options={{ headerShown: true }} />
         </Stack.Navigator>
     );
   };

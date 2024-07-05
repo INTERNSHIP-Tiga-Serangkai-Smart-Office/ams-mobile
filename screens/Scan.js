@@ -1,8 +1,8 @@
 import { Camera, CameraView } from "expo-camera";
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View, Linking } from "react-native";
+import { Button, StyleSheet, Text, View, Linking,Alert } from "react-native";
 
-export default function App() {
+export default function App({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -15,9 +15,20 @@ export default function App() {
     getCameraPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({  data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${Linking.openURL(`${data}`)} has been scanned!`);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    Alert.alert(`Hasil Data Scan`,`Barcode dengan No.AIN : ${data}\n Berhasil di scan`,[
+      {
+        text:'Cancel',
+        onPress : () => console.log('cancel pressed'),
+        style: 'cancel'
+      },
+      {
+        text:'Detail',
+        onPress: () => navigation.navigate('Detail', { data }),
+      }
+    ] );
   };
 
   if (hasPermission === null) {
