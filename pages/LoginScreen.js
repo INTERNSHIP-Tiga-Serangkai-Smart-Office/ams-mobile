@@ -1,15 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import ROUTES from "../constants/route";
-import {Image} from 'expo-image';
-import DrawerScreen from '../Drawer/DrawerScreen';
-import Home from '../screens/Home';
+import { Image } from "expo-image";
 
 export default function Example() {
-
   const [show, setShow] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();
@@ -55,7 +60,7 @@ export default function Example() {
                 contentFit: "cover",
                 width: 350,
                 height: 350,
-                marginBottom: 10
+                marginBottom: 10,
               }}
               source={require("../assets/TSPM.png")}
             />
@@ -99,7 +104,10 @@ export default function Example() {
                     setShow(!show);
                   }}
                 >
-                  <Ionicons name={show === false ? "eye-outline" : "eye-off-outline"} size={25}></Ionicons>
+                  <Ionicons
+                    name={show === false ? "eye-outline" : "eye-off-outline"}
+                    size={25}
+                  ></Ionicons>
                 </TouchableOpacity>
               </View>
             </View>
@@ -111,7 +119,9 @@ export default function Example() {
                 </View>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.FORGOT)}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ROUTES.FORGOT)}
+            >
               <Text style={styles.formLink}>Forgot password?</Text>
             </TouchableOpacity>
           </View>

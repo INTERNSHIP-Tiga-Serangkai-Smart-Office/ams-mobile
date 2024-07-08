@@ -5,8 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/TS.png",
-    "userInterfaceStyle": "light"
-    },
+    "userInterfaceStyle": "light",
     "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
@@ -14,12 +13,17 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data.",
           "recordAudioAndroid": true
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -31,4 +35,4 @@
       "favicon": "./assets/favicon.png"
     }
   }
-
+}

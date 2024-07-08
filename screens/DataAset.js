@@ -7,7 +7,7 @@ export default function DataAset() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/fixed")
+      .get("http://192.168.35.80:5000/fixed")
       .then((response) => {
         console.log(response.data);
         setMaster(response.data);
