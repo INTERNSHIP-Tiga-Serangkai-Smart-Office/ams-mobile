@@ -3,20 +3,18 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import * as SecureStore from 'expo-secure-store';
 import ROUTES from "../constants/route";
-import {Image} from 'expo-image';
-import DrawerScreen from '../Drawer/DrawerScreen';
-import Home from '../screens/Home';
+import { Image } from 'expo-image'; // Use react-native-expo-image-cache for Expo Image caching
+import{storeToken} from '../constants/authToken';
 
 export default function Example() {
-
-  const [show, setShow] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
-  const navigation = useNavigation();
+  const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -32,14 +30,22 @@ export default function Example() {
           password: form.password,
         }),
       });
-      const responseData = await response.json();
 
       if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+
+        // Store the token securely
+        // await SecureStore.setItemAsync('authToken', String(responseData.token));
+        storeToken(String(responseData.accessToken));
+
         navigation.navigate(ROUTES.DRAWER);
       } else {
+        const responseData = await response.json();
         Alert.alert("Login Failed", responseData.error);
       }
     } catch (error) {
+      console.error("Error during login:", error);
       Alert.alert("Error", "Something went wrong. Please try again later.");
     }
   };
@@ -57,7 +63,7 @@ export default function Example() {
                 height: 350,
                 marginBottom: 10
               }}
-              source={require("../assets/TSPM.png")}
+              uri={require("../assets/TSPM.png")}
             />
           </View>
 
@@ -88,18 +94,15 @@ export default function Example() {
                 placeholder="********"
                 placeholderTextColor="#6b7280"
                 style={styles.inputControl}
-                secureTextEntry={visible}
+                secureTextEntry={!show}
                 value={form.password}
               />
               <View>
                 <TouchableOpacity
                   style={{ position: "absolute", bottom: 12, right: 20 }}
-                  onPress={() => {
-                    setVisible(!visible);
-                    setShow(!show);
-                  }}
+                  onPress={() => setShow(!show)}
                 >
-                  <Ionicons name={show === false ? "eye-outline" : "eye-off-outline"} size={25}></Ionicons>
+                  <Ionicons name={show ? "eye-off-outline" : "eye-outline"} size={25} />
                 </TouchableOpacity>
               </View>
             </View>

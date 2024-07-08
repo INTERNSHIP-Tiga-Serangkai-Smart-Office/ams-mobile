@@ -8,10 +8,11 @@ export default function Detail({ route }) {
 
   const [master, setMaster] = useState([]);
   const [loading, setLoading] = useState(true);
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   
   useEffect(() => {
     axios
-      .get(`http://192.168.32.113:5000/fixedNo/${data}`)
+      .get(`${apiUrl}/fixedNo/${data}`)
       .then((response) => {
         console.log(response.data);
         setMaster(response.data);

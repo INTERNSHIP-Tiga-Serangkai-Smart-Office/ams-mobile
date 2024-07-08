@@ -1,19 +1,37 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, RefreshControl } from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {getToken} from '../constants/authToken';
+// import * as SecureToken from 'expo-secure-store';
 
 export default function DataMaster() {
   const [master, setMaster] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+
+  const fetchData = () => {
     axios
-      .get("http://192.168.32.113:5000/fixed")
+      .get(`${apiUrl}/fixed`,{headers:{
+        Authorization: `bearer ${getToken}`
+      }})
       .then((response) => {
         console.log(response.data);
         setMaster(response.data.data);
       })
       .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+    setRefreshing(false);
+  };
 
   const renderUserCard = ({item}) => {
     return (
@@ -32,7 +50,10 @@ export default function DataMaster() {
         data={master}
         keyExtractor={(item) => item.FixedIDNo.toString()}
         renderItem={renderUserCard}
-      ></FlatList>
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
+      />
     </View>
   );
 }
