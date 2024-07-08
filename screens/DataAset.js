@@ -7,10 +7,10 @@ export default function DataMaster() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/fixed")
+      .get("http://192.168.32.113:5000/fixed")
       .then((response) => {
         console.log(response.data);
-        setMaster(response.data);
+        setMaster(response.data.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -20,8 +20,8 @@ export default function DataMaster() {
       <View style={styles.card}>
         <Text style={styles.title}>{item.EntityRelations.EntityName}</Text>
         <Text style={styles.email}>{item.AccNo}</Text>
-        <Text style={styles.username}>{item.FixedGroup ? d.FixedGroup.Name : "N/A"}</Text>
-        <Text style={styles.website}>{item.EntitasBisni ? d.EntitasBisni.EBCode : "N/A"}</Text>
+        <Text style={styles.username}>{item.FixedGroup ? item.FixedGroup.Name : "N/A"}</Text>
+        <Text style={styles.website}>{item.EntitasBisni ? item.EntitasBisni.EBCode : "N/A"}</Text>
       </View>
     );
   };
