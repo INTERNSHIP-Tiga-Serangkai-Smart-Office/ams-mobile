@@ -1,13 +1,23 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Search from "../assets/search.png";
+import { Octicons } from "@expo/vector-icons";
 
 export default function DataAset() {
   const [master, setMaster] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://192.168.35.80:5000/fixed")
+      .get("http://192.168.137.1:5000/fixed")
       .then((response) => {
         console.log(response.data);
         setMaster(response.data);
@@ -32,11 +42,44 @@ export default function DataAset() {
 
   return (
     <View style={styles.container}>
-      <FlatList
+      {/* <FlatList
         data={master}
         keyExtractor={(item) => item.FixedIDNo.toString()}
         renderItem={renderUserCard}
-      ></FlatList>
+      ></FlatList> */}
+      <View
+        style={{
+          flexDirection: "row",
+          backgroundColor: "#f0f8ff",
+          borderRadius: 20,
+          padding: 10,
+          marginVertical: 10,
+          marginHorizontal: 40,
+          marginBottom: 60,
+          right: 30,
+        }}
+      >
+        <TouchableOpacity>
+          <Image
+            source={Search}
+            style={{ height: 20, width: 20, left: 300, top: 5 }}
+          ></Image>
+        </TouchableOpacity>
+        <TextInput
+          placeholder="Search AIN"
+          style={{ fontSize: 17 }}
+        ></TextInput>
+      </View>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity>
+          <Octicons
+            name="filter"
+            size={30}
+            color="black"
+            style={{ left: 380, bottom: 100 }}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -44,7 +87,7 @@ export default function DataAset() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#d3d3d3",
     padding: 30,
     paddingHorizontal: 10,
   },

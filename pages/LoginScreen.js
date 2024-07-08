@@ -18,6 +18,7 @@ export default function Example() {
   const [show, setShow] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
   const navigation = useNavigation();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
