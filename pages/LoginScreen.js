@@ -1,12 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "expo-image"; // Use react-native-expo-image-cache for Expo Image caching
 import React, { useState } from "react";
 import { Alert, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import * as SecureStore from 'expo-secure-store';
+import { storeToken } from "../constants/authToken";
 import ROUTES from "../constants/route";
-import { Image } from 'expo-image'; // Use react-native-expo-image-cache for Expo Image caching
-import{storeToken} from '../constants/authToken';
 
 export default function Example() {
   const [show, setShow] = useState(false);
@@ -36,13 +35,13 @@ export default function Example() {
         console.log(responseData);
 
         // Store the token securely
-        // await SecureStore.setItemAsync('authToken', String(responseData.token));
-        storeToken(String(responseData.accessToken));
+        await storeToken(String(responseData.accessToken));
 
         navigation.navigate(ROUTES.DRAWER);
       } else {
         const responseData = await response.json();
         Alert.alert("Login Failed", responseData.error);
+        console.error("Login failed:", responseData);
       }
     } catch (error) {
       console.error("Error during login:", error);
@@ -61,7 +60,7 @@ export default function Example() {
                 contentFit: "cover",
                 width: 350,
                 height: 350,
-                marginBottom: 10
+                marginBottom: 10,
               }}
               uri={require("../assets/TSPM.png")}
             />
@@ -98,10 +97,7 @@ export default function Example() {
                 value={form.password}
               />
               <View>
-                <TouchableOpacity
-                  style={{ position: "absolute", bottom: 12, right: 20 }}
-                  onPress={() => setShow(!show)}
-                >
+                <TouchableOpacity style={{ position: "absolute", bottom: 12, right: 20 }} onPress={() => setShow(!show)}>
                   <Ionicons name={show ? "eye-off-outline" : "eye-outline"} size={25} />
                 </TouchableOpacity>
               </View>

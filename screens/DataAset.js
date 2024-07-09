@@ -1,7 +1,7 @@
-import { View, Text, StyleSheet, FlatList, RefreshControl } from "react-native";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {getToken} from '../constants/authToken';
+import React, { useEffect, useState } from "react";
+import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { getToken } from "../constants/authToken";
 // import * as SecureToken from 'expo-secure-store';
 
 export default function DataMaster() {
@@ -10,17 +10,24 @@ export default function DataMaster() {
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
+  const fetchData = async (setMaster) => {
+    try {
+      const token = await getToken();
+      if (!token) {
+        console.log("No token available");
+        return;
+      }
 
-  const fetchData = () => {
-    axios
-      .get(`${apiUrl}/fixed`,{headers:{
-        Authorization: `bearer ${getToken}`
-      }})
-      .then((response) => {
-        console.log(response.data);
-        setMaster(response.data.data);
-      })
-      .catch((err) => console.log(err));
+      const response = await axios.get(`${apiUrl}/fixed`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(response.data);
+      setMaster(response.data.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -33,7 +40,7 @@ export default function DataMaster() {
     setRefreshing(false);
   };
 
-  const renderUserCard = ({item}) => {
+  const renderUserCard = ({ item }) => {
     return (
       <View style={styles.card}>
         <Text style={styles.title}>{item.EntityRelations.EntityName}</Text>
@@ -46,14 +53,7 @@ export default function DataMaster() {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={master}
-        keyExtractor={(item) => item.FixedIDNo.toString()}
-        renderItem={renderUserCard}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-        }
-      />
+      <FlatList data={master} keyExtractor={(item) => item.FixedIDNo.toString()} renderItem={renderUserCard} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />} />
     </View>
   );
 }
