@@ -2,26 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet,ActivityIndicator } from 'react-native';
 import axios from "axios";
+import { getToken } from "../constants/authToken";
 
 export default function Detail({ route }) {
   const { data } = route.params;
 
   const [master, setMaster] = useState([]);
   const [loading, setLoading] = useState(true);
+  
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   
-  useEffect(() => {
-    axios
-      .get(`${apiUrl}/fixedNo/${data}`)
-      .then((response) => {
-        console.log(response.data);
-        setMaster(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
+ const fetchData = async (setMaster) => {
+    try {
+      const token = await getToken();
+      if (!token) {
+        console.log("No token available");
+        return;
+      }
+
+      const response = await axios.get(`${apiUrl}/fixedNo/${data}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+      console.log(response.data);
+      setMaster(response.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(setMaster);
   }, []);
 
   if (loading) {
@@ -97,4 +111,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  
 });

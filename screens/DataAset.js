@@ -31,12 +31,12 @@ export default function DataMaster() {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(setMaster);
   }, []);
 
-  const handleRefresh = () => {
+  const handleRefresh = async () => {
     setRefreshing(true);
-    fetchData();
+    await fetchData(setMaster);
     setRefreshing(false);
   };
 

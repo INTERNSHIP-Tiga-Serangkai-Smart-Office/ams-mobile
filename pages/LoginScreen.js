@@ -62,7 +62,7 @@ export default function Example() {
                 height: 350,
                 marginBottom: 10,
               }}
-              uri={require("../assets/TSPM.png")}
+              source={require("../assets/TSPM.png")}
             />
           </View>
 
