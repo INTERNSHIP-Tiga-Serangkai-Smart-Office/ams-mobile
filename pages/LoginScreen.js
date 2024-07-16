@@ -98,7 +98,7 @@ export default function Example() {
               />
               <View>
                 <TouchableOpacity style={{ position: "absolute", bottom: 12, right: 20 }} onPress={() => setShow(!show)}>
-                  <Ionicons name={show ? "eye-off-outline" : "eye-outline"} size={25} />
+                  <Ionicons name={show ? "eye-outline" : "eye-off-outline"} size={25} />
                 </TouchableOpacity>
               </View>
             </View>

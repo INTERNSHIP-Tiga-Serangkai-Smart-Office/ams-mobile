@@ -7,6 +7,8 @@ import SigninScreen from './../pages/SigninScreen';
 import Drawer from '../Drawer/DrawerScreen';
 import Scan from '../screens/Scan';
 import Detail from "../screens/Detail";
+import Relokasi from "../screens/Relokasi";
+import DetailRelokasi from "../screens/DetailRelokasi";
 const Stack = createStackNavigator();
 
 function AuthNavigator () {
@@ -19,6 +21,8 @@ function AuthNavigator () {
             <Stack.Screen name={ROUTES.DRAWER} component={Drawer} options={{ headerShown: false }} />
             <Stack.Screen name="Scan" component={Scan} options={{ headerShown: true }} />
             <Stack.Screen name="Detail" component={Detail} options={{ headerShown: true }} />
+            <Stack.Screen name="Relokasi" component={Relokasi} options={{ headerShown: true }} />
+            <Stack.Screen name="DetailRelokasi" component={DetailRelokasi} options={{ headerShown: true }} />
         </Stack.Navigator>
     );
   };
