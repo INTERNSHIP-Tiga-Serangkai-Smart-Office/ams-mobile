@@ -6,8 +6,8 @@ import { getToken } from "../constants/authToken";
 import { ScrollView } from "react-native-gesture-handler";
 import { Ionicons } from '@expo/vector-icons';
 
-export default function Detail({ route,navigation }) {
-  const { ID } = route.params;
+export default function DetailDataAsset({ route,navigation }) {
+  const { FixedIDNo } = route.params;
 
   const [master, setMaster] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,7 @@ export default function Detail({ route,navigation }) {
         return;
       }
 
-      const response = await axios.get(`${apiUrl}/asset-relocation/${ID}`, {
+      const response = await axios.get(`${apiUrl}/fixed/${FixedIDNo}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,15 +44,14 @@ export default function Detail({ route,navigation }) {
   };
 
   const mainData = [
-    { label: "TransNo", name: "TransNo", value: master?.TransNo },
-    { label: "Description", name: "TransDesc", value: master?.TransDesc },
-    { label: "TransDate", name: "TransDate", value: master?.TransDate ? new Date(master.TransDate).toLocaleString() : "N/A" },
-    { label: "TransDate", name: "TransDate", value: master?.TransDate ? new Date(master?.AssetRelocationItems?.[0]?.RelocationDate).toLocaleString() : "N/A" },
-    // { label: "Entitas Bisnis", name: "IDNoEB", value: master?.Fixed?.FixedNo },
-    { label: "Pengguna Awal", name: "PreviousEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.PreviousEmployeeResponsible || "N/A" },
-    { label: "Pengguna Terbaru", name: "NewEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.NewEmployeeResponsible || "N/A" },
-    { label: "Tempat Awal", name: "reviousLocationDetails", value: master?.AssetRelocationItems?.[0]?.PreviousLocationDetails?.LocationName},  
-    { label: "Tempat Terbaru", name: "NewLocationDetails", value: master?.AssetRelocationItems?.[0]?.NewLocationDetails?.LocationName},  
+    
+    { label: "AIN", name: "FixedNo", value: master?.FixedNo },
+    { label: "EntityName", name: "EntityName", value: master?.EntityRelations?.EntityName || "N/A" },
+    { label: "AccNo", name: "AccNo", value:master?.AccNo },
+    { label: "Currency", name: "Currency", value: master?.Currency },
+    { label: "Name FixedGroup", name: "Name FixedGroup", value: master?.FixedGroup?.Name || "N/A" },
+    { label: "EBCode", name: "EBCodee", value: master?.EntitasBisni?.EBCode|| "N/A" },
+    { label: "LocationName", name: "LocationName", value: master?.Location?.LocationName|| "N/A"},  
   ];
 
 
@@ -101,7 +100,6 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    
     marginBottom: 10,
   },
   label: {

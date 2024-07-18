@@ -5,7 +5,7 @@ import axios from 'axios';
 import { getToken } from '../constants/authToken';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-const Relokasi = ({ route }) => {
+const Relokasi = ({ route, navigation }) => {
   const { FixedIDNo, IDNoEB, FixedNo, EBCode } = route.params;
   const [transDesc, setTransDesc] = useState('');
   const [idNoEB, setIdNoEB] = useState(IDNoEB.toString());
@@ -54,7 +54,7 @@ const Relokasi = ({ route }) => {
           Authorization: `Bearer ${token}`
         }
       });
-      navigation.navigate('DataRelokasi');
+      navigation.navigate('Data Relokasi',);
       console.log('Success:', response.data);
     } catch (error) {
       console.error('Error:', error);

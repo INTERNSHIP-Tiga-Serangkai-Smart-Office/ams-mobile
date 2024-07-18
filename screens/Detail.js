@@ -147,6 +147,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
+    borderWidth: 1,  // Lebar border
+    borderColor: "black",  // Warna border
+    borderRadius: 8, 
   },
   fab: {
     alignSelf: 'flex-end',

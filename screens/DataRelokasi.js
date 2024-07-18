@@ -5,11 +5,10 @@ import { useFocusEffect } from "@react-navigation/native";
 import { getToken } from "../constants/authToken";
 import { Octicons } from "@expo/vector-icons";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import Pagination from "../pagination/Pagination";
 
 export default function DataRelokasi({ navigation }) {
-  const [master, setMaster] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
+   
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -25,6 +24,10 @@ export default function DataRelokasi({ navigation }) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          _page: currentPage, // Halaman saat ini
+          _limit: perPage,    // Jumlah item per halaman
+        }
       });
       console.log(response.data);
       setMaster(response.data.data);
@@ -64,8 +67,7 @@ export default function DataRelokasi({ navigation }) {
       <View style={styles.card}>
         <Text style={styles.title}>{item.TransNo}</Text>
         <Text style={styles.title2}>{item.TransDesc}</Text>
-        <Text style={styles.email}>{item.TransDate}</Text>
-        {/* <Text style={styles.username}>{item.FixedGroup ? item.FixedGroup.Name : "N/A"}</Text> */}
+        <Text style={styles.email}>{new Date(item.TransDate).toLocaleString()}</Text>
         <Text style={styles.website}>{ item.EntitasBisni.EBCode }</Text>
         <TouchableOpacity style={styles.fab} 
           onPress={() => navigation.navigate('DetailRelokasi', { ID: item.ID })}>
@@ -74,18 +76,19 @@ export default function DataRelokasi({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
+      
     );
   };
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
-      return master;
+      return master.slice(0, perPage);
     }
     
     const filteredData = master.filter(item =>
       item.TransNo.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    return filteredData;
+    return filteredData.slice(0, perPage);
   };
 
   return (
@@ -105,7 +108,7 @@ export default function DataRelokasi({ navigation }) {
         renderItem={renderUserCard}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       />
-      
+      <Pagination perPage={perPage} setPerPage={setPerPage} fetchData={fetchData} />
     </View>
   );
 }
@@ -122,6 +125,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
+    borderWidth: 1,  // Lebar border
+    borderColor: "black",  // Warna border
+    borderRadius: 8, 
   },
   title: {
     fontSize: 18,
@@ -163,6 +169,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 30,
-    marginTop: 10, // jarak antara button dan data list
+    marginTop: 1, // jarak antara button dan data list
   },
 });

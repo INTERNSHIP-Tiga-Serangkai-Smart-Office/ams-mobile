@@ -1,12 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text, View, TextInput } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text, View, TextInput,TouchableOpacity } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getToken } from "../constants/authToken";
 import { Octicons } from "@expo/vector-icons";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Pagination from "../pagination/Pagination";
 
 export default function DataMaster({ navigation }) {
   const [master, setMaster] = useState([]);
+  const [perPage, setPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -24,6 +28,10 @@ export default function DataMaster({ navigation }) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          _page: currentPage, // Halaman saat ini
+          _limit: perPage,    // Jumlah item per halaman
+        }
       });
       console.log(response.data);
       setMaster(response.data.data);
@@ -45,7 +53,7 @@ export default function DataMaster({ navigation }) {
 
       fetchDataOnFocus();
 
-      // Cleanup function (optional)
+      // Cleanup function (optional)  
       return () => {
         // Cleanup logic, if any
       };
@@ -61,28 +69,35 @@ export default function DataMaster({ navigation }) {
   const renderUserCard = ({ item }) => {
     return (
       <View style={styles.card}>
-        <Text style={styles.title}>{item.EntityRelations.EntityName}</Text>
-        <Text style={styles.email}>{item.FixedNo}</Text>
+        <Text style={styles.title}>{item.FixedNo}</Text>
+        <Text style={styles.title2}>{item.EntityRelations.EntityName}</Text>
         <Text style={styles.email}>{item.AccNo}</Text>
         <Text style={styles.username}>{item.FixedGroup ? item.FixedGroup.Name : "N/A"}</Text>
         <Text style={styles.website}>{item.EntitasBisni ? item.EntitasBisni.EBCode : "N/A"}</Text>
+        <TouchableOpacity style={styles.fab} 
+          onPress={() => navigation.navigate('DetailDataAsset', { FixedIDNo: item.FixedIDNo })}>
+          <Text style={styles.fabText}>
+            <AntDesign name="rightcircle" size={20} color="blue" />
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   };
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
-      return master;
+      return master.slice(0, perPage);
     }
     
     const filteredData = master.filter(item =>
       item.FixedNo.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    return filteredData;
+    return filteredData.slice(0, perPage);
   };
 
   return (
     <View style={styles.container}>
+      
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -98,6 +113,7 @@ export default function DataMaster({ navigation }) {
         renderItem={renderUserCard}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       />
+      <Pagination perPage={perPage} setPerPage={setPerPage} fetchData={fetchData} />
     </View>
   );
 }
@@ -114,9 +130,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
+    borderWidth: 1,  // Lebar border
+    borderColor: "black",  // Warna border
+    borderRadius: 8, 
   },
   title: {
     fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  title2: {
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
   },
@@ -143,5 +167,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     fontSize: 16,
+  },
+  fab: {
+    alignSelf: 'flex-end',         
+    // backgroundColor: '#1E79D5', 
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 30,
+    marginTop: 1, // jarak antara button dan data list
   },
 });
