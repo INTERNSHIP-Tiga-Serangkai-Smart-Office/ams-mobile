@@ -8,7 +8,15 @@
     "userInterfaceStyle": "light",
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c9aed2a6-80b5-450b-952d-1c0d1cde73fe"
+      }
+    },
+    "android": {
+      "package": "com.sadewaammar21.AMS"
+    }
   },
   "assetBundlePatterns": [
     "**/*"
@@ -27,10 +35,16 @@
   "ios": {
     "supportsTablet": true,
     "config": {
-        "usesNonExemptEncryption": false
-      }
+      "usesNonExemptEncryption": false
+    },
+    "NSAppTransportSecurity": {
+      "NSAllowsArbitraryLoads": true
+    }
   },
   "android": {
+    "permissions": [
+      "INTERNET"
+    ],
     "adaptiveIcon": {
       "foregroundImage": "./assets/TSPM.png",
       "backgroundColor": "#ffffff"

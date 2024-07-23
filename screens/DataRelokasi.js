@@ -1,18 +1,31 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text, View, TextInput,TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { getToken } from "../constants/authToken";
 import { Octicons } from "@expo/vector-icons";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import Pagination from "../pagination/Pagination";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function DataRelokasi({ navigation }) {
-   
+  const [master, setMaster] = useState([]);
+  const [perPage, setPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  const fetchData = async () => {
+  const fetchData = async (page) => {
     try {
       const token = await getToken();
       if (!token) {
@@ -20,36 +33,44 @@ export default function DataRelokasi({ navigation }) {
         return;
       }
 
+      setLoading(true);
+
       const response = await axios.get(`${apiUrl}/asset-relocation`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         params: {
-          _page: currentPage, // Halaman saat ini
-          _limit: perPage,    // Jumlah item per halaman
-        }
+          _page: page,
+          _limit: perPage,
+        },
       });
       console.log(response.data);
-      setMaster(response.data.data);
+
+      if (page === 1) {
+        setMaster(response.data.data);
+      } else {
+        setMaster((prevMaster) => [...prevMaster, ...response.data.data]);
+      }
+
+      setLoading(false);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(1);
   }, []);
 
-  // Memuat ulang data saat komponen mendapatkan fokus
   useFocusEffect(
     React.useCallback(() => {
       const fetchDataOnFocus = async () => {
-        await fetchData();
+        await fetchData(1);
       };
 
       fetchDataOnFocus();
 
-      // Cleanup function (optional)
       return () => {
         // Cleanup logic, if any
       };
@@ -58,8 +79,31 @@ export default function DataRelokasi({ navigation }) {
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await fetchData();
+    setCurrentPage(1);
+    await fetchData(1);
     setRefreshing(false);
+  };
+
+  const handleLoadMore = () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    fetchData(nextPage);
+  };
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) {
+      return master;
+    }
+
+    const filteredData = master.filter((item) =>
+      item.TransNo.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    return filteredData;
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const renderUserCard = ({ item }) => {
@@ -67,28 +111,18 @@ export default function DataRelokasi({ navigation }) {
       <View style={styles.card}>
         <Text style={styles.title}>{item.TransNo}</Text>
         <Text style={styles.title2}>{item.TransDesc}</Text>
-        <Text style={styles.email}>{new Date(item.TransDate).toLocaleString()}</Text>
-        <Text style={styles.website}>{ item.EntitasBisni.EBCode }</Text>
-        <TouchableOpacity style={styles.fab} 
-          onPress={() => navigation.navigate('DetailRelokasi', { ID: item.ID })}>
+        <Text style={styles.email}>{formatDate(item.TransDate)}</Text>
+        <Text style={styles.website}>{item.EntitasBisni.EBCode}</Text>
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={() => navigation.navigate('DetailRelokasi', { ID: item.ID })}
+        >
           <Text style={styles.fabText}>
             <AntDesign name="rightcircle" size={20} color="blue" />
           </Text>
         </TouchableOpacity>
       </View>
-      
     );
-  };
-
-  const handleSearch = () => {
-    if (!searchQuery.trim()) {
-      return master.slice(0, perPage);
-    }
-    
-    const filteredData = master.filter(item =>
-      item.TransNo.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    return filteredData.slice(0, perPage);
   };
 
   return (
@@ -104,11 +138,19 @@ export default function DataRelokasi({ navigation }) {
       </View>
       <FlatList
         data={handleSearch()}
-        keyExtractor={(item) => item.ID.toString()}
+        keyExtractor={(item, index) => item.ID.toString() + index}
         renderItem={renderUserCard}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={() => (
+          <View style={styles.pagination}>
+            {loading && <ActivityIndicator size="large" />}
+          </View>
+        )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
       />
-      <Pagination perPage={perPage} setPerPage={setPerPage} fetchData={fetchData} />
     </View>
   );
 }
@@ -125,17 +167,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
-    borderWidth: 1,  // Lebar border
-    borderColor: "black",  // Warna border
-    borderRadius: 8, 
+    borderWidth: 1,
+    borderColor: "black",
   },
   title: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 5,
-  },
-  email: {
-    color: "#666",
     marginBottom: 5,
   },
   title2: {
@@ -143,8 +180,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  username: {
-    fontStyle: "italic",
+  email: {
+    color: "#666",
     marginBottom: 5,
   },
   website: {
@@ -164,11 +201,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   fab: {
-    alignSelf: 'flex-end',         
-    // backgroundColor: '#1E79D5', 
+    alignSelf: "flex-end",
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 30,
-    marginTop: 1, // jarak antara button dan data list
+    marginTop: 1,
+  },
+  pagination: {
+    width: "90%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

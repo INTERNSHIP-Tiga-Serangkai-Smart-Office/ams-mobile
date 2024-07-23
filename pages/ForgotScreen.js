@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native-web';
 const ForgotScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>lupa sandi</Text>
+      <Text style={styles.title} >lupa sandi silahkan hubungin Tim IT</Text>
     </View>
   )
 }
@@ -17,5 +17,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
+    },
+    title: {
+      fontSize: 18,
+      fontWeight: "bold",
+      marginBottom: 5,
     },
 });

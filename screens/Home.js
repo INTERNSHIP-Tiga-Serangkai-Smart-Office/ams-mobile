@@ -1,89 +1,65 @@
+import React from "react";
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
-  ScrollView,
-  Image,
+  Animated,
+  Easing,
 } from "react-native";
-import React from "react";
-import { Octicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { TextInput } from "react-native-gesture-handler";
-import Search from "../assets/search.png";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function Home() {
   const navigation = useNavigation();
+  
+  // Animation for the scan icon
+  const animation = new Animated.Value(0);
+
+  React.useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(animation, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animation, {
+          toValue: 0,
+          duration: 1000,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
+
+  // Interpolating the animation value to move the text up and down
+  const animatedTranslateY = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -10], // Adjust these values to control the range of movement
+  });
 
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView>
-        <ScrollView>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#f0f8ff",
-              borderRadius: 20,
-              padding: 10,
-              marginVertical: 25,
-              marginHorizontal: 40,
-              marginBottom: 60,
-              right: 30,
-            }}
+      <View style={styles.textContainer}>
+        <Animated.View style={{ transform: [{ translateY: animatedTranslateY }] }}>
+          <Text style={styles.text}>Silahkan Scan Dibawah Ini</Text>
+        </Animated.View>
+        <Text style={styles.arrow}>▼</Text>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity
+            style={styles.floatingButton}
+            onPress={() => navigation.navigate("Scan")}
           >
-            <TouchableOpacity>
-              <Image
-                source={Search}
-                style={{ height: 20, width: 20, left: 320, top: 5 }}
-              ></Image>
-            </TouchableOpacity>
-            <TextInput
-              placeholder="Search AIN"
-              style={{ fontSize: 17 }}
-            ></TextInput>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity>
-              <Octicons
-                name="filter"
-                size={30}
-                color="black"
-                style={{ left: 400, bottom: 100 }}
-              />
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </KeyboardAwareScrollView>
-
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View
-          style={{
-            backgroundColor: "#fff5ee",
-            borderRadius: 20,
-            paddingHorizontal: 40,
-            paddingVertical: 10,
-            marginLeft: 20,
-            marginBottom: 400,
-            elevation: 10,
-            shadowColor: "black",
-          }}
-        >
-          <Text style={{ fontSize: 20, padding: 20 }}></Text>
+            <View style={styles.iconBackground}>
+              <AntDesign name="scan1" size={60} color="white" />
+            </View>
+          </TouchableOpacity>
+         
         </View>
-      </ScrollView>
-
-      <TouchableOpacity
-        style={styles.floatingButton}
-        onPress={() => navigation.navigate("Scan")}
-      >
-        <View
-          style={{ backgroundColor: "#3cb371", borderRadius: 30, padding: 8 }}
-        >
-          <AntDesign name="scan1" size={45} color="white" />
-        </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -92,11 +68,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#d3d3d3",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  iconContainer: {
+    alignItems: "center",
   },
   floatingButton: {
-    flex: 1,
-    position: "absolute",
-    top: 580,
-    right: 40,
+    backgroundColor: "#3cb371",
+    borderRadius: 30,
+    padding: 10,
+  },
+  iconBackground: {
+    backgroundColor: "#3cb371",
+    borderRadius: 30,
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  arrow: {
+    fontSize: 30,
+    color: "#000",
+    marginTop: 10,
   },
 });

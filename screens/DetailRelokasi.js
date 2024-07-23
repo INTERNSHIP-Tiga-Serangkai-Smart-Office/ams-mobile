@@ -4,7 +4,7 @@ import { View, Text, StyleSheet,ActivityIndicator,TouchableOpacity } from 'react
 import axios from "axios";
 import { getToken } from "../constants/authToken";
 import { ScrollView } from "react-native-gesture-handler";
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 
 export default function Detail({ route,navigation }) {
   const { ID } = route.params;
@@ -43,11 +43,16 @@ export default function Detail({ route,navigation }) {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   const mainData = [
     { label: "TransNo", name: "TransNo", value: master?.TransNo },
     { label: "Description", name: "TransDesc", value: master?.TransDesc },
-    { label: "TransDate", name: "TransDate", value: master?.TransDate ? new Date(master.TransDate).toLocaleString() : "N/A" },
-    { label: "TransDate", name: "TransDate", value: master?.TransDate ? new Date(master?.AssetRelocationItems?.[0]?.RelocationDate).toLocaleString() : "N/A" },
+    { label: "TransDate", name: "TransDate", value:  formatDate(master?.TransDate) },
+    { label: "TransDate", name: "TransDate", value:  formatDate(master?.AssetRelocationItems?.[0]?.RelocationDate) },
     // { label: "Entitas Bisnis", name: "IDNoEB", value: master?.Fixed?.FixedNo },
     { label: "Pengguna Awal", name: "PreviousEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.PreviousEmployeeResponsible || "N/A" },
     { label: "Pengguna Terbaru", name: "NewEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.NewEmployeeResponsible || "N/A" },
