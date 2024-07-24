@@ -4,22 +4,22 @@ import { View, Text, StyleSheet,ActivityIndicator,TouchableOpacity } from 'react
 import axios from "axios";
 import { getToken } from "../constants/authToken";
 import { ScrollView } from "react-native-gesture-handler";
-import { Ionicons } from '@expo/vector-icons';
+// import { Ionicons } from '@expo/vector-icons';
 
 export default function Detail({ route,navigation }) {
-  const { data } = route.params;
+  const { ID } = route.params;
 
   const [master, setMaster] = useState([]);
   const [loading, setLoading] = useState(true);
   
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  const handleEditAndNavigate = (master) => {
-    const FixedIDNo = master?.FixedIDNo;
-    if (FixedIDNo) {
-      navigation.navigate("Relokasi", { FixedIDNo });
-    }
-  };
+  // const handleEditAndNavigate = (master) => {
+  //   const FixedIDNo = master?.FixedIDNo;
+  //   if (FixedIDNo) {
+  //     navigation.navigate("Relokasi", { FixedIDNo });
+  //   }
+  // };
   
   const fetchData = async (setMaster) => {
     try {
@@ -29,7 +29,7 @@ export default function Detail({ route,navigation }) {
         return;
       }
 
-      const response = await axios.get(`${apiUrl}/fixedNo/${data}`, {
+      const response = await axios.get(`${apiUrl}/asset-relocation/${ID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -43,15 +43,21 @@ export default function Detail({ route,navigation }) {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   const mainData = [
-    { label: "Nama Asset", name: "FixedAssetName", value: master.EntityRelations ? master.EntityRelations.EntityName : "N/A" },
-    { label: "AIN", name: "FixedNo", value: master?.FixedNo },
-    { label: "Status", name: "Status", value: master?.Status === 1 ? "Active" : "Inactive" },
-    // { label: "Entity", name: "Entity", value: master?.EntityRelations?.EntityName },
-    { label: "Entitas Bisnis", name: "IDNoEB", value: master?.EntitasBisni?.EBCode },
-    { label: "Group", name: "IDNoGR", value: master?.FixedGroup?.Name },
-    { label: "Nama Tempat", name: "EB Code", value: master.EntitasBisni?master.EntitasBisni.EBCode:"N/A" },
-    // { label: "Tgl Registrasi", name: "RegDate", value: master?.RegDate },
+    { label: "TransNo", name: "TransNo", value: master?.TransNo },
+    { label: "Description", name: "TransDesc", value: master?.TransDesc },
+    { label: "TransDate", name: "TransDate", value:  formatDate(master?.TransDate) },
+    { label: "TransDate", name: "TransDate", value:  formatDate(master?.AssetRelocationItems?.[0]?.RelocationDate) },
+    // { label: "Entitas Bisnis", name: "IDNoEB", value: master?.Fixed?.FixedNo },
+    { label: "Pengguna Awal", name: "PreviousEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.PreviousEmployeeResponsible || "N/A" },
+    { label: "Pengguna Terbaru", name: "NewEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.NewEmployeeResponsible || "N/A" },
+    { label: "Tempat Awal", name: "reviousLocationDetails", value: master?.AssetRelocationItems?.[0]?.PreviousLocationDetails?.LocationName},  
+    { label: "Tempat Terbaru", name: "NewLocationDetails", value: master?.AssetRelocationItems?.[0]?.NewLocationDetails?.LocationName},  
   ];
 
 
@@ -76,25 +82,6 @@ export default function Detail({ route,navigation }) {
   }
 
   return (
-    // <View style={styles.container}>
-    //   {/* <FlatList
-    //     data={master}
-    //     keyExtractor={item => String(item.id)}
-    //     renderItem={renderUserCard}
-    //   /> */}
-    //   <View style={styles.card}>
-    //     {/* <Text style={styles.title}>{master.EntityRelations.EntityName}</Text> */}
-    //     <Text style={styles.title}>
-    //       {master.EntityRelations ? master.EntityRelations.EntityName : "N/A"}
-    //     </Text>
-    //     <Text style={styles.email}>{master.FixedNo}</Text>
-    //     <Text style={styles.username}>{master.AccNo}</Text>
-    //     {/* <Text style={styles.website}>{master.FixedNo}</Text> */}
-    //     <Text style={styles.username}>{master.FixedGroup ? master.FixedGroup.Name : "N/A"}</Text>
-    //     <Text style={styles.username}>{master.EntitasBisni ? master.EntitasBisni.EBCode : "N/A"}</Text>
-    //     {/* <Text style={styles.username}>{item.AccNo}</Text> */}
-    //   </View>
-    // </View>
     <ScrollView style={styles.container} >
       <View style={styles.card} >
       {
@@ -105,12 +92,6 @@ export default function Detail({ route,navigation }) {
           </View>
         ))
       }
-          <TouchableOpacity style={styles.fab} 
-          onPress={() => navigation.navigate('Relokasi', { FixedIDNo: master.FixedIDNo, IDNoEB: master.IDNoEB, FixedNo: master.FixedNo, EBCode: master.EntitasBisni?master.EntitasBisni.EBCode: null })}>
-          <Text style={styles.fabText}>
-            <Ionicons name="location-sharp" size={15} />
-          </Text>
-        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -120,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor:  "#F0F0F065",
-    padding: 20,
+    padding: 5,
   },
   itemContainer: {
     flexDirection: "row",
