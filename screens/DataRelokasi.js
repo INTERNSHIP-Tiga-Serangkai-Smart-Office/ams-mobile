@@ -47,7 +47,10 @@ export default function DataRelokasi({ navigation }) {
       console.log(response.data);
 
       if (page === 1) {
-        setMaster(response.data.data);
+        const result = response.data.data;
+      const invertedData = result.reverse();
+      setMaster(invertedData);
+        // setMaster(response.data.data);
       } else {
         setMaster((prevMaster) => [...prevMaster, ...response.data.data]);
       }
