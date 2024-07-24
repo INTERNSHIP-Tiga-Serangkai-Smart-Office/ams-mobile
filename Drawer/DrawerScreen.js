@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SimpleLineIcons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { View, Text } from "react-native";
 import {
@@ -14,10 +14,44 @@ import DataRelokasi from "../screens/DataRelokasi";
 import Signout from "../screens/Signout";
 import Settings from "../screens/Settings";
 import User from "../assets/superadmin.png";
+import { getToken } from "../constants/authToken";
+import axios from "axios";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerScreen = () => {
+
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
+
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = await getToken();
+        if (!token) {
+          console.log("No token available");
+          return;
+        }
+
+        const response = await axios.get(`${apiUrl}/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUsername(response.data.User.name);
+        setRole(response.data.role.name);
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => (
@@ -48,7 +82,7 @@ const DrawerScreen = () => {
                 color: "#111",
               }}
             >
-              Johndea
+              {username}
             </Text>
             <Text
               style={{
@@ -56,7 +90,7 @@ const DrawerScreen = () => {
                 color: "#111",
               }}
             >
-              Superadmin
+              {role}
             </Text>
           </View>
           <DrawerItemList {...props} />
