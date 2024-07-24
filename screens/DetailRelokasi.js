@@ -52,7 +52,7 @@ export default function Detail({ route,navigation }) {
     { label: "TransNo", name: "TransNo", value: master?.TransNo },
     { label: "Description", name: "TransDesc", value: master?.TransDesc },
     { label: "TransDate", name: "TransDate", value:  formatDate(master?.TransDate) },
-    { label: "TransDate", name: "TransDate", value:  formatDate(master?.AssetRelocationItems?.[0]?.RelocationDate) },
+    { label: "RelocationDate", name: "TransDate", value:  formatDate(master?.AssetRelocationItems?.[0]?.RelocationDate) },
     // { label: "Entitas Bisnis", name: "IDNoEB", value: master?.Fixed?.FixedNo },
     { label: "Pengguna Awal", name: "PreviousEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.PreviousEmployeeResponsible || "N/A" },
     { label: "Pengguna Terbaru", name: "NewEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.NewEmployeeResponsible || "N/A" },

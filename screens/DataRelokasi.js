@@ -35,7 +35,7 @@ export default function DataRelokasi({ navigation }) {
 
       setLoading(true);
 
-      const response = await axios.get(`${apiUrl}/asset-relocation`, {
+      const response = await axios.get(`${apiUrl}/asset-relocation-item`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,9 +48,8 @@ export default function DataRelokasi({ navigation }) {
 
       if (page === 1) {
         const result = response.data.data;
-      const invertedData = result.reverse();
-      setMaster(invertedData);
-        // setMaster(response.data.data);
+        const invertedData = result.reverse();
+        setMaster(invertedData);
       } else {
         setMaster((prevMaster) => [...prevMaster, ...response.data.data]);
       }
@@ -99,7 +98,7 @@ export default function DataRelokasi({ navigation }) {
     }
 
     const filteredData = master.filter((item) =>
-      item.TransNo.toLowerCase().includes(searchQuery.toLowerCase())
+      item.AssetRelocation.TransNo.toLowerCase().includes(searchQuery.toLowerCase())
     );
     return filteredData;
   };
@@ -112,13 +111,13 @@ export default function DataRelokasi({ navigation }) {
   const renderUserCard = ({ item }) => {
     return (
       <View style={styles.card}>
-        <Text style={styles.title}>{item.TransNo}</Text>
-        <Text style={styles.title2}>{item.TransDesc}</Text>
-        <Text style={styles.email}>{formatDate(item.TransDate)}</Text>
-        <Text style={styles.website}>{item.EntitasBisni.EBCode}</Text>
+        <Text style={styles.title}>{item.AssetRelocation.TransNo}</Text>
+        <Text style={styles.title2}>{item.Fixed.FixedAssetName}</Text>
+        <Text style={styles.email}>{formatDate(item.RelocationDate)}</Text>
+        <Text style={styles.website}>{item.Fixed.Location.LocationName}</Text>
         <TouchableOpacity
           style={styles.fab}
-          onPress={() => navigation.navigate('DetailRelokasi', { ID: item.ID })}
+          onPress={() => navigation.navigate('DetailRelokasi', { ID: item.RelocationID })}
         >
           <Text style={styles.fabText}>
             <AntDesign name="rightcircle" size={20} color="blue" />
@@ -141,7 +140,7 @@ export default function DataRelokasi({ navigation }) {
       </View>
       <FlatList
         data={handleSearch()}
-        keyExtractor={(item, index) => item.ID.toString() + index}
+        keyExtractor={(item, index) => item.RelocationID.toString() + index}
         renderItem={renderUserCard}
         onEndReached={handleLoadMore}
         onEndReachedThreshold={0.1}
