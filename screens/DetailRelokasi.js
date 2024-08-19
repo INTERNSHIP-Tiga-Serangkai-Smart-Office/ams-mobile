@@ -1,41 +1,40 @@
-// screens/Detail.js
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet,ActivityIndicator,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import axios from "axios";
 import { getToken } from "../constants/authToken";
-import { ScrollView } from "react-native-gesture-handler";
-// import { Ionicons } from '@expo/vector-icons';
 
-export default function Detail({ route,navigation }) {
+export default function Detail({ route, navigation }) {
   const { ID } = route.params;
 
   const [master, setMaster] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-  // const handleEditAndNavigate = (master) => {
-  //   const FixedIDNo = master?.FixedIDNo;
-  //   if (FixedIDNo) {
-  //     navigation.navigate("Relokasi", { FixedIDNo });
-  //   }
-  // };
-  
-  const fetchData = async (setMaster) => {
+  const fetchData = async () => {
     try {
       const token = await getToken();
       if (!token) {
         console.log("No token available");
         return;
       }
-
-      const response = await axios.get(`${apiUrl}/asset-relocation/${ID}`, {
+        
+      console.log(`Fetching data from: ${apiUrl}/asset-relocation-item/${ID}`);
+      
+      const response = await axios.get(`${apiUrl}/asset-relocation-item/${ID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        cache: 'no-store' // Tambahkan ini jika ingin memastikan cache tidak digunakan
       });
       console.log(response.data);
-      setMaster(response.data);
+
+      if (response.data.data && response.data.data.length > 0) {
+        setMaster(response.data.data[0]);
+      } else {
+        setMaster(null);
+      }
+      
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -43,27 +42,32 @@ export default function Detail({ route,navigation }) {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+
+    // Listener untuk menangkap focus event
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData(); // Panggil fetchData ketika layar mendapatkan fokus
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   const mainData = [
-    { label: "TransNo", name: "TransNo", value: master?.TransNo },
-    { label: "Description", name: "TransDesc", value: master?.TransDesc },
-    { label: "TransDate", name: "TransDate", value:  formatDate(master?.TransDate) },
-    { label: "RelocationDate", name: "TransDate", value:  formatDate(master?.AssetRelocationItems?.[0]?.RelocationDate) },
-    // { label: "Entitas Bisnis", name: "IDNoEB", value: master?.Fixed?.FixedNo },
-    { label: "Pengguna Awal", name: "PreviousEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.PreviousEmployeeResponsible || "N/A" },
-    { label: "Pengguna Terbaru", name: "NewEmployeeResponsible", value: master?.AssetRelocationItems?.[0]?.NewEmployeeResponsible || "N/A" },
-    { label: "Tempat Awal", name: "reviousLocationDetails", value: master?.AssetRelocationItems?.[0]?.PreviousLocationDetails?.LocationName},  
-    { label: "Tempat Terbaru", name: "NewLocationDetails", value: master?.AssetRelocationItems?.[0]?.NewLocationDetails?.LocationName},  
+    { label: "TransNo", name: "TransNo", value: master?.AssetRelocation?.TransNo },
+    { label: "Fixed Asset Name", name: "FixedAssetName", value: master?.Fixed?.FixedAssetName },
+    { label: "Fixed No", name: "FixedNo", value: master?.Fixed?.FixedNo },
+    { label: "TransDate", name: "RelocationDate", value: formatDate(master?.RelocationDate) },
+    { label: "Pengguna Awal", name: "PreviousEmployeeResponsible", value: master?.PreviousEmployeeResponsible || "N/A" },
+    { label: "Pengguna Terbaru", name: "NewEmployeeResponsible", value: master?.NewEmployeeResponsible || "N/A" },
+    { label: "Tempat Awal", name: "PreviousLocationDetails", value: master?.Fixed?.Location?.LocationName },
+    { label: "Tempat Terbaru", name: "NewLocationDetails", value: master?.Fixed?.Location?.LocationName },
   ];
-
-
-  useEffect(() => {
-    fetchData(setMaster);
-  }, []);
 
   if (loading) {
     return (
@@ -82,16 +86,14 @@ export default function Detail({ route,navigation }) {
   }
 
   return (
-    <ScrollView style={styles.container} >
-      <View style={styles.card} >
-      {
-        mainData.map((item,index) =>(
-          <View key={index} style={styles.itemContainer} >
+    <ScrollView style={styles.container}>
+      <View style={styles.card}>
+        {mainData.map((item, index) => (
+          <View key={index} style={styles.itemContainer}>
             <Text style={styles.label}>{item.label} :</Text>
             <Text style={styles.value}>{item.value}</Text>
           </View>
-        ))
-      }
+        ))}
       </View>
     </ScrollView>
   );
@@ -112,11 +114,11 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     marginRight: 10,
-    flex: 1, // Flex 1 untuk label
+    flex: 1,
   },
   value: {
-    flex: 1, // Flex 1 untuk value
-    textAlign: "right", // Value ditampilkan di sebelah kanan
+    flex: 1,
+    textAlign: "right",
   },
   loader: {
     flex: 1,
@@ -128,21 +130,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 15,
     marginBottom: 10,
-    borderWidth: 1,  // Lebar border
-    borderColor: "black",  // Warna border
-    borderRadius: 8, 
-  },
-  fab: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#1E79D5',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    marginTop: 20, // jarak antara button dan data list
-  },
-  fabText: {
-    color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 8,
   },
 });
